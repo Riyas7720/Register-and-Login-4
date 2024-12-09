@@ -1,0 +1,64 @@
+
+
+  <div class="card-body p-4">
+
+    <div class="container" id="RegBody">
+        <h1>Create Account</h1>
+        <p>Sign up to get started</p>
+        <input type="text" id="reg_uname" placeholder="Name" onchange="ClearText()">
+        <input type="text" id="reg_uid" placeholder="User ID" onchange="ClearText()">
+        <input type="password" id="reg_pass" placeholder="Password" onchange="ClearText()">
+        <input type="password" id="reg_repass" placeholder="Re-enter Password" onchange="ClearText()">
+        <span id="signupError" style="color: red; font-size: 0.8rem;"></span>
+        <div id="RetMsgReg" class="alert alert-danger " style="display:none" role="alert"> </div>
+        <input type="button" value="Sign Up" onclick="Register()">
+        <p class="switch" onclick="OpenLoginPage()">Already have an account? Login</p>
+    </div>
+</div>
+
+<script>
+
+  function OpenLoginPage() {
+    document.getElementById("myid").click();
+  }
+
+  function Register()
+  {
+    
+    var unm    = document.getElementById("reg_uname").value.trim();
+    var uid    = document.getElementById("reg_uid").value.trim();
+    var pass   = document.getElementById("reg_pass").value.trim();
+    var repass = document.getElementById("reg_repass").value.trim();
+
+    if (pass != repass)
+    {
+      RegReturnMsg("danger,Password Not Matched...");
+    }
+    else
+    {
+      google.script.run.withSuccessHandler(RegReturnMsg).UserRegister(uid,pass,unm);
+    }
+    
+    
+  }
+  
+  function RegReturnMsg(data)
+  {
+      let v = data.split(",");
+      let type=v[0];
+
+      $('#RetMsgReg').removeClass("alert-success").removeClass("alert-danger").addClass("alert-"+type);
+      $('#RetMsgReg').html(v[1]);
+      $('#RetMsgReg').show();
+
+      if (type == 'success')
+      {
+        setTimeout(function(){  
+           document.getElementById("myid").click();
+           }, 3000);
+      }
+
+  }
+
+  document.getElementById('RegBody').classList.add('active')
+</script>
